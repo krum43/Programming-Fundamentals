@@ -1,0 +1,51 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace _2._Change_List
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int> numbers = Console.ReadLine().Split().Select(int.Parse).ToList<int>();            
+            while(true)
+            {
+                string command = Console.ReadLine();
+                string[] commandSplit = command.Split();
+                if (command == "Odd")
+                {
+                    Console.WriteLine(String.Join(" ", numbers.Where(number =>
+                    number % 2 == 1)));
+                    return;
+                }
+                
+                if(command=="Even")
+                    {
+                    Console.WriteLine(String.Join(" ", numbers.Where(number =>
+                    number % 2 == 0)));
+                    return;
+                    }
+                if(commandSplit[0]=="Delete")
+                {
+                    int numberToDelete= int.Parse(commandSplit[1]);
+                    for (int i =numbers.Count-1;i>=0 ;i--)
+                    {
+
+                        if (numbers[i] == numberToDelete)
+                        {
+                            numbers.Remove(numbers[i]);
+                        }
+                    }
+                }
+                if(commandSplit[0]=="Insert")
+                {
+                    int element = int.Parse(commandSplit[1]);
+                    int position = int.Parse(commandSplit[2]);
+
+                    numbers.Insert(position, element);
+                }
+            }
+        }
+    }
+}
