@@ -1,0 +1,79 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Hero_Recruitment
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var date = new SortedDictionary<string, List<string>>();
+            string command = Console.ReadLine();
+            while(command!="End")
+            {
+                string[] commandSplit = command.Split().ToArray();
+                switch(commandSplit[0])
+                {
+                    case "Enroll":
+                        string name = commandSplit[1];
+                        if(!date.ContainsKey(name))
+                        {
+                            date.Add(name, new List<string>());                            
+                        }
+                        else
+                        {
+                            Console.WriteLine($"{name} is already enrolled.");
+                        }
+                        break;
+                    case "Learn":
+                        string heroName = commandSplit[1];
+                        string spellName = commandSplit[2];
+                        if(!date.ContainsKey(heroName))
+                        {
+                            Console.WriteLine($"{heroName} doesn't exist.");
+                            break;
+                        }
+                        if (date[heroName].Contains(spellName))
+                        {
+                            Console.WriteLine($"{heroName} has already learnt {spellName}.");
+                        }
+                        else
+                        {
+                            date[heroName].Add(spellName);
+                        }
+                        break;
+                    case "Unlearn":
+                        string heroName1 = commandSplit[1];
+                        string spellName1 = commandSplit[2];
+                        if (!date.ContainsKey(heroName1))
+                        {
+                            Console.WriteLine($"{heroName1} doesn't exist.");
+                            break;
+                        }
+                        if (!date[heroName1].Contains(spellName1))
+                        {
+                            Console.WriteLine($"{heroName1} doesn't know {spellName1}.");
+                        }
+                        else
+                        {
+                            date[heroName1].Remove(spellName1);
+                        }
+                        break;                   
+                }
+                command = Console.ReadLine();
+            }                             
+                
+                Console.WriteLine("Heroes:");
+            foreach (var (hero, spells) in date.OrderByDescending(x => x.Value.Count).ThenBy(y => y.Key))
+            {
+
+                Console.WriteLine($"== {hero}: {string.Join(", ", spells)}");
+            }
+                  
+            Console.WriteLine();
+            
+
+        }
+    }
+}
