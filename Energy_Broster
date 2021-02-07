@@ -1,0 +1,69 @@
+using System;
+
+namespace Energy_Broster
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            double Prise = 0;
+            string fruit = Console.ReadLine();
+            string sizeOfSet = Console.ReadLine();
+            int countOfSets = int.Parse(Console.ReadLine());
+            if (sizeOfSet == "small")
+            {
+                switch (fruit)
+                {
+                    case "Watermelon":
+                        Prise = countOfSets * 2 *56;
+                        break;
+
+                    case "Mango":
+                        Prise = countOfSets * 2 * 36.66;
+                        break;
+
+                    case "Pineapple":
+                        Prise = countOfSets * 2 * 42.10;
+                        break;
+
+                    case "Raspberry":
+                        Prise = countOfSets * 2 * 20;
+                        break;
+                }
+            }
+            if (sizeOfSet == "big")
+            {
+                switch (fruit)
+                {
+                    case "Watermelon":
+                        Prise = countOfSets * 5 * 28.70; ;
+                        break;
+
+                    case "Mango":
+                        Prise = countOfSets * 5 * 19.60;
+                        break;
+
+                    case "Pineapple":
+                        Prise = countOfSets * 5 * 24.80;
+                        break;
+
+                    case "Raspberry":
+                        Prise = countOfSets * 5 * 15.20;
+                        break;
+                }
+            }
+            if ((Prise >= 400) && (Prise <= 1000))
+            {
+                Prise = (85 * Prise) / 100;
+            }
+            if (Prise > 1000)
+            {
+                Prise = Prise / 2;
+            }
+            Console.WriteLine($"{Prise:f2} lv.");
+        }
+    }
+
+}
+    
+
