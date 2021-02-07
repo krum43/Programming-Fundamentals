@@ -1,0 +1,62 @@
+using System;
+using System.Collections.Generic;
+
+namespace Emoji_Sumator
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string line = Console.ReadLine();
+            string[] lineSplit= line.Split(" :");
+            string emojiCode = Console.ReadLine();
+            string [] emojiCodeSplit=emojiCode.Split(":");
+            List<string> emojiFound = new List<string>();
+            int totalPower = 0;
+            for (int i =1; i <=lineSplit.Length-2; i+=2)
+            {
+                if (lineSplit[i].Length>=4)
+                { 
+                    if(lineSplit[i+1][0]=='.'||lineSplit[i][0]==','|| lineSplit[i][0]=='?'|| lineSplit[i][0] == '!')
+                    {
+                        for (int j = 0; i < lineSplit[i].Length; j++)
+                        {
+                            if (lineSplit[i][j] >= 97 && lineSplit[i][j] <= 122)
+                            {
+                                if (lineSplit[i][j] == lineSplit[i][lineSplit[i].Length - 1])
+                                {
+                                    emojiFound.Add(lineSplit[i]);
+                                }
+                                continue;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            foreach (var emoji in emojiFound)
+            {
+                int currentEmojiPower = 0;
+                foreach (var simvol in emoji)
+                {
+                    currentEmojiPower += (int)simvol;
+                }
+                totalPower += currentEmojiPower;
+            }
+            Console.WriteLine(String.Join(", ",emojiFound));
+            Console.WriteLine($"Total Emoji Power: {totalPower}");
+        }
+    }
+}
