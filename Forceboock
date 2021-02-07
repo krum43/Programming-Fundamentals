@@ -1,0 +1,73 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Forceboock
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Dictionary<string, string> date = new Dictionary<string, string>();
+            SortedDictionary<string, List<string>> output = new SortedDictionary<string, List<string>>();
+            while(true)
+            {
+                string line=Console.ReadLine();
+                if(line=="Lumpawaroo")
+                {
+                    output = ReversDict(date);
+                    foreach (var side in output.OrderBy(y=>y.Value.Count))
+                    {
+                        Console.WriteLine($"Side: {side}, Members: {side.Value.Count}");
+                        foreach (var name in side.Value)
+                        {
+                            Console.WriteLine($"! {name}");
+                        }
+                    }
+                }
+                if (line.Contains('|'))
+                {
+                    var linesplit = line.Split('|');
+                    if(!(date.ContainsKey(linesplit[1])))
+                    {
+                        date.Add(linesplit[1], linesplit[0]);
+                    }
+                }
+                else
+                {
+                    var linesplit = line.Split('-','>');
+                    if(!(date.ContainsKey(linesplit[0])))
+                    {
+                        date.Add(linesplit[1], linesplit[0]);
+                        Console.WriteLine($"{linesplit[0]} join the {linesplit[1]} side!");
+                    }
+                    else
+                    {
+                        date[linesplit[0]] = linesplit[1];
+                    }
+                }
+            }
+        }
+        static SortedDictionary<string,List<string>> ReversDict(Dictionary<string, string> input)
+        {
+            SortedDictionary<string,List<string>> ReverseInput = new SortedDictionary<string,List<string>>();
+            foreach (var name in input)
+            {
+                if (!(ReverseInput.ContainsKey(input[name.Value])))
+                    {
+                        ReverseInput.Add(name.Value,new List<string>());
+                        ReverseInput[name.Value].Add(name.Key);
+
+                }
+                else
+                {
+                    ReverseInput[name.Value].Add(name.Key);
+                }                
+            }
+            return ReverseInput;
+        }
+    }
+}
+
