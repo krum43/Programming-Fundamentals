@@ -1,0 +1,110 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Hornet_Comm
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Dictionary<string, int> privateMessage = new Dictionary<string, int>();
+            Dictionary<string, string> broatcast = new Dictionary<string, string>();
+            while (true)
+            {
+                string line = Console.ReadLine();
+                if (line == "Hornet is Green")
+                {
+                    break;
+                }
+                var tokens = line.Split(new char[] { '>', '-', '<' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
+                var firstQuery = tokens[0];
+                string secondQuery = tokens[1];
+
+                for (int i = 0; i < firstQuery.Length; i++)
+                {
+                    if ((firstQuery[i] > 48) && (firstQuery[i] < 57))
+                    {
+                        if (i == firstQuery.Length - 1)
+                        {
+                            for (int j = 0; j < secondQuery.Length; j++)
+                            {
+                                if (((secondQuery[j] > 48) && (secondQuery[j] < 57)) || ((secondQuery[j] > 65) && (secondQuery[j] < 90)) || ((secondQuery[j] > 97) && (secondQuery[j] < 122)))
+                                {
+                                    if (j == secondQuery.Length - 1)
+                                    {
+                                        firstQuery.Reverse();
+                                        privateMessage.Add(secondQuery, int.Parse(firstQuery));
+                                    }
+                                    else
+                                    {
+                                        continue;
+                                    }
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        for (int j = 0; j < secondQuery.Length; j++)
+                        {
+                            if (((secondQuery[j] > 48) && (secondQuery[j] < 57)) || ((secondQuery[j] > 65) && (secondQuery[j] < 90)) || ((secondQuery[j] > 97) && (secondQuery[j] < 122)))
+                            {
+                                if (j == secondQuery.Length - 1)
+                                {
+                                    firstQuery.Reverse();
+                                    broatcast.Add(secondQuery, firstQuery);                                    
+                                }
+                                else
+                                {
+                                    continue;
+                                }
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+                foreach (var frecuency in broatcast)
+                {
+                    Console.WriteLine($"{frecuency.Key}=>{frecuency.Value}");
+                }
+                foreach (var recepient in privateMessage)
+                {
+                    Console.WriteLine($"{recepient.Value}=>{recepient.Key}");
+                }            
+        }
+            static string ReplaceLetters(string word)
+
+            {
+                string outputstring = string.Empty;
+
+                for (int i = 0; i < word.Length; i++)
+                {
+                    if ((word[i] > 65) && (word[i] < 90))
+                    {
+                        outputstring += word[i] + 32;
+                    }
+                    if ((word[i] > 97) && (word[i] < 122))
+                    {
+                        outputstring += word[i] - 32;
+                    }
+                }
+                return outputstring;
+            }
+        }
+    } 
