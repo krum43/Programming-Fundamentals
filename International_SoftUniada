@@ -1,0 +1,44 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+
+namespace International_SoftUniada
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+           string line=Console.ReadLine();
+           string[] lineSplit = line.Split("->");
+           Dictionary<string, int> country = new Dictionary<string,int>();
+           Dictionary<string, Dictionary<string, int>> countryName = new Dictionary<string, Dictionary<string, int>>();
+           if(line=="END")
+            {
+                foreach (var Country in country.OrderByDescending(x => x.Value))
+                {
+                    Console.WriteLine($"{Country.Key}: {Country.Value}");
+                    foreach (var contestant in countryName[Country.Key].OrderByDescending(y => y.Value))
+                    {
+                        Console.WriteLine($"--{contestant.Key}->{contestant.Value}");
+                    }
+                }
+                return;
+            }
+           else
+            {
+                if (country.ContainsKey(lineSplit[0]))
+                {
+                    country[lineSplit[0]] += int.Parse(lineSplit[2]);
+                    countryName[lineSplit[0]][lineSplit[1]]=int.Parse(lineSplit[2]);
+                }
+                else
+                {
+                    country.Add(lineSplit[0],int.Parse(lineSplit[2]));
+                    countryName.Add(lineSplit[0],new Dictionary<string,int>());
+                    countryName[lineSplit[0]][lineSplit[1]]=int.Parse(lineSplit[2]);                        
+                }
+            }
+        }
+    }
+}
