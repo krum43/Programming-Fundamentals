@@ -1,0 +1,53 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Memory_View
+    {
+        class Program
+        {
+            static void Main(string[] args)
+            {
+                
+                while (true)
+                {
+                string line = Console.ReadLine();
+                if(line=="Visual Studio crash")
+                {
+                    return;
+                }
+                int [] linesplit= line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray(); 
+                    string currentstring = "";
+                    int countofpoint = 0;
+                    for (int i = 0; i < linesplit.Length - 4; i++)
+                    {
+                        for (int j = 1; j <= 3; j++)
+                        {
+                            currentstring += linesplit[i].ToString();
+                        }
+                    if (currentstring == "326561975932763")
+                    {
+                        countofpoint = linesplit[i + 4];
+
+
+
+                        for (int k = i + 6; k < i + 6 + countofpoint; k++)
+                        {
+                            if (k == i + 6 + countofpoint)
+                            {
+                                Console.WriteLine((char)linesplit[k]);
+                                break;
+                            }
+                            Console.Write((char)linesplit[k]);
+                        }
+                    }
+                       currentstring = "";
+                    }
+                }
+            }
+        }
+    }
+
+
