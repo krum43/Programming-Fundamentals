@@ -1,0 +1,96 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Judje
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Dictionary<string, Dictionary<string, int>>contestUsersPoints = new Dictionary<string, Dictionary<string, int>>();
+            Dictionary<string, int> userTotalPoints = new Dictionary<string, int>();
+            while (true)
+            {
+                string line = Console.ReadLine();
+                if (line == "no more time")
+                {
+                    break;
+                }
+                var linesplit = line.Split(new char[] { '-', '>' }, StringSplitOptions.RemoveEmptyEntries);                    ;
+                string username = linesplit[0];
+                string contest = linesplit[1].Trim();
+                int points = int.Parse(linesplit[2]);
+
+                if (!contestUsersPoints.ContainsKey(contest))
+                {
+                    contestUsersPoints.Add(contest, new Dictionary<string, int>());
+                    contestUsersPoints[contest].Add(username, points);
+                    if (!userTotalPoints.ContainsKey(username))
+                    {
+                        userTotalPoints.Add(username, points);
+                    }
+                    else
+                    {
+                        userTotalPoints[username] += points;
+                    }
+                }
+                else
+                {
+                    if (!contestUsersPoints[contest].ContainsKey(username))
+                    {
+                        contestUsersPoints[contest].Add(username, points);
+                        userTotalPoints.Add(username,points);                        
+                    }
+                    else
+                    {
+                        if (contestUsersPoints[contest][username] < points)
+                        {
+                            contestUsersPoints[contest][username] = points;
+                            userTotalPoints[username] += points;
+                        }
+                        else
+                        {
+                            userTotalPoints[username] += points;
+                        }
+                    }
+                }
+            }
+            foreach (var kvp in contestUsersPoints)
+            {
+
+                Console.WriteLine($"{kvp.Key}: {kvp.Value.Count()} participants");
+                int counter = 1;
+                foreach (var item in kvp.Value
+                    .OrderByDescending(x => x.Value)
+                    .ThenBy(x => x.Key))
+                {
+                    Console.WriteLine($"{counter}. {item.Key}<::> {item.Value}");
+                    counter++;
+                }
+            }
+                    Console.WriteLine($"Individual standings:");
+
+                    int counterForUsers = 1;
+
+                    foreach (var kvp1 in userTotalPoints
+                        .OrderByDescending(x => x.Value)
+                        .ThenBy(x => x.Key))
+                    {
+                        Console.WriteLine($"{counterForUsers}. {kvp1.Key}-> {kvp1.Value}");
+                        counterForUsers++;
+                    }                
+        }
+    }
+}
+ 
+
+
+ 
+
+
+
+
+        
+    
+
