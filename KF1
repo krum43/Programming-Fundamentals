@@ -1,0 +1,81 @@
+using System;
+using System.Linq;
+
+namespace KF1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            {
+                int length = int.Parse(Console.ReadLine());
+                int countOfSequenceOnes = 0;
+                int maxCountOfSequenceOnes = 0;
+                int maxSum = 0;
+                int bestRightIndex = 0;
+                int currentBestRightIndex = 0;
+                int maxtotalSum = 0;
+                int bestSample = 0;
+                string line = Console.ReadLine();
+                int[] output = new int[length];
+                while (line != "Clone them!")
+                {
+                    int[] numbers = line.Split('!').Select(int.Parse).ToArray();                    
+                    int totalSum = numbers.Sum();
+                    for (int i = 0; i < length; i++)
+                    {
+                        if (numbers[i] == 1)
+                        {
+                            countOfSequenceOnes++;
+                            if (countOfSequenceOnes > maxCountOfSequenceOnes)
+                            {
+                                maxCountOfSequenceOnes = countOfSequenceOnes;
+                                currentBestRightIndex = i;
+                                bestSample = 1;
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            countOfSequenceOnes = 0;
+                            continue;
+                        }
+                    }
+                    if (maxCountOfSequenceOnes > maxSum)
+                    {
+                        maxSum = maxCountOfSequenceOnes;
+                        output = numbers;
+                        maxtotalSum = totalSum;
+                    }
+                    if (maxCountOfSequenceOnes == maxSum)
+                    {
+                        
+                        if (currentBestRightIndex < bestRightIndex)
+                        {
+                            bestRightIndex = currentBestRightIndex;
+                            output = numbers;
+                            bestSample++;
+                        }
+                        if (currentBestRightIndex == bestRightIndex)
+                        {
+                            if (totalSum > maxtotalSum)
+                            {
+                                maxtotalSum = totalSum;
+                                output = numbers;
+                                bestSample = 1;
+                                maxSum =maxtotalSum;
+                            }
+                        }
+                    }
+                    line = Console.ReadLine();
+                    countOfSequenceOnes = 0;
+                }
+                Console.WriteLine($"Best DNA sample {bestSample} with sum: {maxSum}.");                
+                Console.WriteLine(String.Join(" ", output));
+
+            }
+        }
+
+    }
+}
+
