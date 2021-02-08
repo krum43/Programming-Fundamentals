@@ -1,0 +1,33 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HornetAssault
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string line1 = Console.ReadLine();
+            string line2 = Console.ReadLine();
+            List<int> beehives = line1.Split().Select(int.Parse).ToList();
+            List<int> hornets= line1.Split().Select(int.Parse).ToList();
+            int sumedUpPower =hornets.Sum();
+            int i = 0;
+            foreach  (int bees in beehives)
+            {
+               if(sumedUpPower<bees)
+                {
+                    Console.WriteLine($"{bees-sumedUpPower}");
+                    sumedUpPower -= beehives[i];
+                    hornets.Remove(hornets[i]);
+                    i++;
+                }
+            }
+             
+
+        }
+    }
+}
