@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+namespace KaminoFactory
+{
+    internal static class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.ReadLine(); // skip DNA sequence length from input - not needed by this solution
+
+            var dnaSamples = new List<DnaSample>();
+
+            string input;
+            while ("Clone them!" != (input = Console.ReadLine()))
+            {
+                dnaSamples.Add(new DnaSample(input?.Replace("!", "")));
+            }
+
+            var bestDnaSample = dnaSamples
+                .OrderByDescending(sample => sample.Length)
+                .ThenBy(sample => sample.Index)
+                .ThenByDescending(sample => sample.Sum)
+                .First();
+
+            Console.WriteLine(
+                $"Best DNA sample {dnaSamples.IndexOf(bestDnaSample) + 1} with sum: {bestDnaSample.Sum}.");
+            Console.WriteLine(string.Join(' ', bestDnaSample.Dna.ToCharArray()));
+        }
+
+        private class DnaSample
+        {
+            private static readonly Regex OnesRegex = new Regex(@"1+");
+            public string Dna { get; }
+            public int Sum { get; private set; }
+            public int Length { get; private set; }
+            public int Index { get; private set; }
+
+            public DnaSample(string dna)
+            {
+                Dna = dna;
+                Sum = 0;
+                Length = 0;
+                Index = 0;
+                Init();
+            }
+
+            private void Init()
+            {
+                foreach (Match sequence in OnesRegex.Matches(Dna))
+                {
+                    if (sequence.Length <= Length) continue;
+                    Length = sequence.Length;
+                    Index = sequence.Index;
+                }
+
+                foreach (var c in Dna.Where(c => c == '1')) Sum++;
+            }
+        }
+    }
+}
+
