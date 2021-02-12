@@ -1,0 +1,75 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Nascar_Qualifications
+{
+    class Program
+    {              
+
+        static void Main(string[] args)
+        {
+            string line = Console.ReadLine();
+            List<string> lineSplit = line.Split().ToList();
+            int countOfRacer = lineSplit.Count();
+            while (true)
+            {
+                string command = Console.ReadLine();
+                if (command == "end")
+                {
+                    Console.WriteLine(String.Join(" ~ ", lineSplit));
+                    return;
+                }
+                string[] commandSplit = command.Split();
+                if (commandSplit[0] == "Race")
+                {
+                    if (!lineSplit.Contains(commandSplit[1]))
+                    {
+                        lineSplit.Add(commandSplit[1]);
+                    }
+                }
+                if (commandSplit[0] == "Accident")
+                {
+                    lineSplit.Remove(commandSplit[1]);
+                    countOfRacer--;
+                }
+                if (commandSplit[0] == "Box")
+                {
+                    if (lineSplit.Contains(commandSplit[1]))
+                    {
+                        if (!(lineSplit[countOfRacer - 1] == commandSplit[1]))
+                        {
+                            for (int i = 0; i <countOfRacer-1; i++)
+                            {
+                                if (lineSplit[i]==commandSplit[1])
+                                {
+                                    string AuxiliaryVariable = lineSplit[i+1];
+                                    lineSplit[i + 1] = lineSplit[i];
+                                    lineSplit[i] = AuxiliaryVariable;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (commandSplit[0] == "Overtake")
+                {
+                    for (int i = 0; i < countOfRacer; i++)
+                    {
+                        if (lineSplit[i] == commandSplit[1])
+                        {
+                            string AuxiliaryVariable =lineSplit[i];
+                            if ((i - int.Parse(commandSplit[2]) >= 0))                                                                               
+                            {
+                                lineSplit[i] = lineSplit[i - int.Parse(commandSplit[2])];
+                                lineSplit[i - int.Parse(commandSplit[2])] = AuxiliaryVariable;
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
