@@ -1,0 +1,83 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Moving_Target
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int> sequenseOfTargets = Console.ReadLine().Split().Select(int.Parse).ToList();         
+            while(true)
+            {
+                string command = Console.ReadLine();
+                if(command=="End")
+                {
+                    Console.WriteLine(String.Join('|', sequenseOfTargets));
+                    return;
+                }
+                string[] commandSplit = command.Split();
+                int index = int.Parse(commandSplit[1]);
+                switch (commandSplit[0])
+                {
+                    case "Shoot":
+                        
+                        int power = int.Parse(commandSplit[2]);
+                        if ((index >= 0) && (index < sequenseOfTargets.Count))
+                        {
+                            if ((sequenseOfTargets[index] - power) > 0)
+                            {
+                                sequenseOfTargets[index] -= power;
+                            }
+                            else
+                            {
+                                sequenseOfTargets.RemoveAt(index);
+                            }
+
+                        }                             
+                        break;
+                    case "Add":
+                        int value = int.Parse(commandSplit[2]);
+                        {
+                            if ((index >= 0) && (index < sequenseOfTargets.Count))
+                            {                               
+                                {
+                                    sequenseOfTargets.Add(index);
+                                    for (int i = sequenseOfTargets.Count - 1; i > index; i--)
+                                    {
+                                        sequenseOfTargets[i] = sequenseOfTargets[i - 1];
+                                    }
+                                    sequenseOfTargets[index] = value;
+                                }                                
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid placement!");
+                            }
+                        }
+                        break;
+                    case "Strike":
+                        int radius= int.Parse(commandSplit[2]);
+                        {
+                             if((index-radius>=0)&&(index+radius < sequenseOfTargets.Count))
+                             {                                  
+                                  for (int i =1; i <=radius; i++)
+                                  {
+                                      sequenseOfTargets.RemoveAt(index-1);
+                                      sequenseOfTargets.RemoveAt(index);
+                                      index--;                                                                            
+                                  }
+                                  sequenseOfTargets.RemoveAt(index);
+                             }
+                             else
+                            {
+                                Console.WriteLine("Strike missed!");
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+    }
+}
