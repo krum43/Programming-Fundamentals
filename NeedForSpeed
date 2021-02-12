@@ -1,0 +1,86 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace NeedForSpeed
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int countOfCars = int.Parse(Console.ReadLine());
+            var carMileage = new Dictionary<string, int>();
+            var carFuel = new Dictionary<string, int>();
+            for (int i = 0; i < countOfCars; i++)
+            {
+                string line = Console.ReadLine();
+                string[] lineSplit = line.Split('|').ToArray();
+                string car = lineSplit[0];
+                int mileage = int.Parse(lineSplit[1]);
+                int fuel = int.Parse(lineSplit[2]);
+                carMileage[car] = mileage;
+                carFuel[car] = fuel;
+            }
+            while (true)
+            {
+                string command = Console.ReadLine();
+                if (command == "Stop")
+                {
+                    foreach (var car in carMileage.OrderByDescending(x=>x.Value).ThenBy(y=>y.Key))
+                    {
+                        Console.WriteLine($"{car.Key} -> Mileage: {car.Value} kms, Fuel in the tank: {carFuel[car.Key]} lt.");
+                    }
+                    return;
+                }
+                string[] commandSplit = command.Split(':').ToArray();
+                string currentCar = commandSplit[1];              
+                if (commandSplit[0] == "Drivë")
+                {
+                    int distance = int.Parse(commandSplit[2]);
+                    int needFuel = int.Parse(commandSplit[3]);
+                    if (needFuel > carFuel[currentCar])
+                    {
+                        Console.WriteLine($"Not enough fuel to make that ride");
+                    }
+
+                    else
+                    {
+                        carMileage[currentCar] += distance;
+                        carFuel[currentCar] -= needFuel;
+                        Console.WriteLine($"{currentCar} driven for {distance} kilometers. {needFuel} liters of fuel consumed");
+                        if (carMileage[currentCar] >= 100000)
+                        {
+                            Console.WriteLine($"Time to sell the {currentCar}!");
+                            carMileage.Remove(currentCar);
+                            carFuel.Remove(currentCar);
+                        }
+                    }
+                }
+                if (commandSplit[0] == "Refuel")
+                {
+                    int fuel = int.Parse(commandSplit[2]);
+                    if((carFuel[currentCar]+fuel)>=75)
+                    {
+                        int differentFuel = carFuel[currentCar] - 75;
+                        carFuel[currentCar] = 75;
+                        Console.WriteLine($"{currentCar} refueled with {differentFuel} liters");
+                    }
+                }
+                if (commandSplit[0] == "Revert")
+                {
+                    int kilometers = int.Parse(commandSplit[2]);
+                    carMileage[currentCar] -= kilometers;
+                    if (carMileage[currentCar] < 10000)
+                    {
+                        carMileage[currentCar] = 10000;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{currentCar} mileage decreased by {kilometers} kilometers");
+                    }
+                }                
+            }
+        }
+    }
+}
+
