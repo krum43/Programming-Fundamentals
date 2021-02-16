@@ -1,0 +1,104 @@
+using System;
+
+namespace Nikuldens_Charity
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string line = Console.ReadLine();
+            string newLine = "";
+            while (true)
+            {
+                string command = Console.ReadLine();
+                string[] commandSplit = command.Split();
+                if (command == "Finish")
+                {                    
+                    return;
+                }
+                else
+                {
+                    if (commandSplit[0] == "Replace")
+                    {
+                        char currentChar = char.Parse(commandSplit[1]);
+                        char newChar = char.Parse(commandSplit[2]);
+                        for (int i = 0; i < line.Length; i++)
+                        {
+                            if (line[i] == currentChar)
+                            {
+                                for (int j = 0; j < i; j++)
+                                {
+                                    newLine += line[j];
+                                }
+                                newLine += newChar;
+                                for (int k = i + 1; k < line.Length; k++)
+                                {
+                                    newLine += line[k].ToString();
+                                }
+                                line = newLine;
+                                newLine = "";
+                            }
+
+                        }
+                        Console.WriteLine(line);
+                    }
+                    if (commandSplit[0] == "Cut")
+                    {
+                        int startIndex = int.Parse(commandSplit[1]);
+                        int endIndex = int.Parse(commandSplit[2]);
+                        if ((startIndex < 0) || (startIndex >= line.Length) || (endIndex < 0) || (endIndex >= line.Length))
+                        {
+                            Console.WriteLine("Invalid indexes!");
+                            continue;
+                        }
+                        line = line.Remove(startIndex, endIndex+1);
+                        Console.WriteLine(line);
+                    }
+                    if (commandSplit[0] == "Make")
+                    {
+                        string upperOrLower = commandSplit[1];
+                        if (upperOrLower == "Upper")
+                        {
+                            line = line.ToUpper();
+                        }
+                        if (upperOrLower == "Lower")
+                        {
+                            line = line.ToLower();
+                        }
+                        Console.WriteLine(line);
+                    }
+                    if (commandSplit[0] == "Check")
+                    {
+                        string subString = commandSplit[1];
+                        if (line.Contains(subString))
+                        {
+                            Console.WriteLine($"Message contains {subString}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Message doesn't contain {subString}");
+                        }
+                    }
+                    if (commandSplit[0] == "Sum")
+                    {
+                        int startIndex = int.Parse(commandSplit[1]);
+                        int endIndex = int.Parse(commandSplit[2]);
+                        int length = endIndex - startIndex + 1;                        
+                        int Sum = 0;
+                        if ((startIndex < 0) || (endIndex > line.Length))
+                        {
+                            Console.WriteLine("Invalid indexes!");
+                            continue;
+                        }
+                        string subString = line.Substring(startIndex, length);
+                        for (int i = 0; i < subString.Length; i++)
+                        {
+                            Sum += subString[i];
+                        }
+                        Console.WriteLine(Sum);
+                    }
+                }
+            }
+        }
+    }
+}
